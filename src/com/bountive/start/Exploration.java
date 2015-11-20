@@ -5,6 +5,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
+import com.bountive.graphics.model.TriangleModel;
+import com.bountive.graphics.shader.BasicShader;
 import com.bountive.util.Disposable;
 import com.bountive.window.Window;
 
@@ -13,7 +15,6 @@ public class Exploration implements Disposable {
 	private static final int TICKS_PER_SECOND = 60;
 	private static final double TIME_SLICE = 1 / (double)TICKS_PER_SECOND;
 	private static final double LAG_CAP = 0.15d;
-	
 	
 	private int tickCount;
 	private int frameCount;
@@ -26,11 +27,10 @@ public class Exploration implements Disposable {
 	private static Exploration instance;
 	private Window window;
 	
-	private float[] colors = new float[]{1.0f, 1.0f, 1.0f};
-	
-	public float[] getColors() {
-		return colors;
-	}
+	//TODO: TEMPORARY
+	private BasicShader shader;
+	private TriangleModel t;
+	///////////////////
 	
 	private void run() {
 		System.out.println("Hello LWJGL! This is Version: " + Sys.getVersion() + ".");
@@ -47,7 +47,9 @@ public class Exploration implements Disposable {
 	}
 	
 	private void loop() {
-		GL11.glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
+		shader = new BasicShader();
+		t = new TriangleModel();
+		
 		lastTime = GLFW.glfwGetTime();
 		
 		while (GLFW.glfwWindowShouldClose(window.getID()) == GL11.GL_FALSE) {
@@ -81,7 +83,15 @@ public class Exploration implements Disposable {
 	
 	private void render(float lerp) {
 		frameCount++;
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		
+		//TODO: TEMPORARY
+		shader.bind();
+		t.render();
+		shader.unbind();
+		/////////////////
+		
 		GLFW.glfwSwapBuffers(window.getID());
 	}
 	
@@ -96,5 +106,7 @@ public class Exploration implements Disposable {
 	
 	public void dispose() {
 		window.dispose();
+		shader.dispose();
+		t.dispose();
 	}
 }

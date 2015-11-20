@@ -63,7 +63,7 @@ public class Window implements Disposable {
 		setPosition((GLFWvidmode.width(displayMode) - width) / 2, (GLFWvidmode.height(displayMode) - height) / 2);
 		
 		GLFW.glfwMakeContextCurrent(windowID);
-		GLFW.glfwSwapInterval(0); //v-sync
+		GLFW.glfwSwapInterval(1); //v-sync
 		GLFW.glfwShowWindow(windowID);
 	}
 	
