@@ -3,7 +3,7 @@ package com.bountive.window.callback;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
-public class MouseButtonCallbackListener extends GLFWMouseButtonCallback {
+public class MouseButtonCallback extends GLFWMouseButtonCallback {
 	
 	@Override
 	public void invoke(long window, int button, int action, int mods) {

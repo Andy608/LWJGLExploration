@@ -21,6 +21,8 @@ public class Window implements Disposable {
 	private int width;
 	private int height;
 	
+	private WindowOptions windowSettings;
+	
 	private ByteBuffer displayMode;
 	
 	public Window() {
@@ -55,6 +57,8 @@ public class Window implements Disposable {
 		height = GLFWvidmode.height(displayMode) / 2;
 		
 		windowID = GLFW.glfwCreateWindow(width, height, windowTitle, MemoryUtil.NULL, MemoryUtil.NULL);
+		windowSettings = new WindowOptions(width, height);
+		
 		
 		if (windowID == MemoryUtil.NULL) {
 			throw new RuntimeException("Failed to create GLFW window.");
@@ -73,6 +77,10 @@ public class Window implements Disposable {
 	
 	public long getID() {
 		return windowID;
+	}
+	
+	public WindowOptions getWindowOptions() {
+		return windowSettings;
 	}
 
 	@Override

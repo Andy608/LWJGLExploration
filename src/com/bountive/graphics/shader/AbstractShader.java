@@ -1,5 +1,11 @@
 package com.bountive.graphics.shader;
 
+import java.nio.FloatBuffer;
+
+import math.Matrix4f;
+import math.Vector3f;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -12,11 +18,14 @@ public abstract class AbstractShader implements Disposable {
 	private int fragmentShaderID;
 	private int programID;
 	
+	private FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+	
 	public AbstractShader(String vertexFilePath, String fragmentFilePath) {
 		programID = GL20.glCreateProgram();
 		attachVertexShader(vertexFilePath);
 		attachFragmentShader(fragmentFilePath);
 		link();
+		bindUniformLocationValues();
 	}
 	
 	private void attachVertexShader(String vertexFilePath) {
@@ -79,6 +88,30 @@ public abstract class AbstractShader implements Disposable {
 	
 	public void unbind() {
 		GL20.glIsProgram(0);
+	}
+	
+	protected int getUniformLocation(String uniformName) {
+		return GL20.glGetUniformLocation(programID, uniformName);
+	}
+	
+	protected abstract void bindUniformLocationValues();
+	
+	protected void loadFloat(int location, float value) {
+		GL20.glUniform1f(location, value);
+	}
+	
+	protected void loadVector(int location, Vector3f vector) {
+		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+	
+	protected void loadBoolean(int location, boolean value) {
+		GL20.glUniform1f(location, value ? 1 : 0);
+	}
+	
+	protected void loadMatrix(int location, Matrix4f matrix4f) {
+		matrix4f.store(matrixBuffer);
+		matrixBuffer.flip();
+		GL20.glUniformMatrix4fv(location, false, matrixBuffer);
 	}
 	
 	@Override
