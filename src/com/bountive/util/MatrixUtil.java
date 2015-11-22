@@ -65,16 +65,12 @@ public final class MatrixUtil {
 		WindowOptions windowOptions = Exploration.getExploration().getWindow().getWindowOptions();
 		float aspectRatio = (float)windowOptions.getWidth() / (float)windowOptions.getHeight();
 		
-		float yScale = (float) ((1f / Math.tan(Math.toRadians(FOV) / 2f)) * aspectRatio);
-		float xScale = (float) ((yScale / aspectRatio));
-		float frustumLength = FAR_PLANE - NEAR_PLANE;
-		
 		projectionMatrix = new Matrix4f();
-		projectionMatrix.m00 = xScale;
-		projectionMatrix.m11 = yScale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
+		projectionMatrix.m00 = 1f / (float)(Math.tan(Math.toRadians(FOV) / 2f));
+		projectionMatrix.m11 = aspectRatio / (float)(Math.tan(Math.toRadians(FOV) / 2f));
+		projectionMatrix.m22 = -((NEAR_PLANE + FAR_PLANE) / FAR_PLANE - NEAR_PLANE);
 		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustumLength);
+		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / FAR_PLANE - NEAR_PLANE);
 		projectionMatrix.m33 = 0;
 		
 		shader.bind();
