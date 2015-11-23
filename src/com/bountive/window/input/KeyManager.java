@@ -3,6 +3,7 @@ package com.bountive.window.input;
 import java.util.LinkedHashSet;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
 import com.bountive.start.Exploration;
 
@@ -46,6 +47,13 @@ public final class KeyManager {
 			else {
 				GLFW.glfwSetCursorPos(windowID, (Exploration.getExploration().getWindow().getWindowOptions().getWidth() / 2), (Exploration.getExploration().getWindow().getWindowOptions().getHeight() / 2));
 				GLFW.glfwSetInputMode(windowID, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
+			}
+			
+			if (debug) {
+				GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+			}
+			else {
+				GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
 			}
 			
 			if (startQuit && !(keys.contains(GLFW.GLFW_KEY_ESCAPE) && keys.contains(GLFW.GLFW_KEY_LEFT_SHIFT))) {

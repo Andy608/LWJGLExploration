@@ -10,6 +10,7 @@ public class BasicShader extends AbstractShader {
 	private int transformationMatrixID;
 	private int projectionMatrixID;
 	private int viewMatrixID;
+//	private int playerPositionID;
 	
 	public BasicShader() {
 		super("com/bountive/graphics/shader/basic_shader.vs", "com/bountive/graphics/shader/basic_shader.fs");
@@ -20,6 +21,7 @@ public class BasicShader extends AbstractShader {
 		transformationMatrixID = super.getUniformLocation("transformationMatrix");
 		projectionMatrixID = super.getUniformLocation("projectionMatrix");
 		viewMatrixID = super.getUniformLocation("viewMatrix");
+		//playerPositionID = super.getUniformLocation("playerPosition");
 	}
 	
 	public void loadTransformationMatrix(Matrix4f matrix) {
@@ -33,4 +35,8 @@ public class BasicShader extends AbstractShader {
 	public void loadViewMatrix(EntityCamera camera) {
 		super.loadMatrix(viewMatrixID, MatrixUtil.createViewMatrix(camera));
 	}
+	
+//	public void loadPlayerPosition(Vector3f position) {
+//		super.loadVector(playerPositionID, position);
+//	}
 }

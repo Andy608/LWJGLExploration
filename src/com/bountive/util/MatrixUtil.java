@@ -83,6 +83,10 @@ public final class MatrixUtil {
 		createProjectionMatrix();
 	}
 	
+	public float getFOV() {
+		return FOV;
+	}
+	
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}

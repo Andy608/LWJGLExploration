@@ -23,33 +23,33 @@ public class EntityCamera {
 		moveCamera(deltaTime);
 	}
 	
-	private float superTime;
+//	private float superTime;
 	public void moveCamera(float deltaTime) {
-		superTime += deltaTime;
+//		superTime += deltaTime;
 		
-		if (!(KeyManager.moveForward || KeyManager.moveBackward || KeyManager.moveLeft || KeyManager.moveRight)) {
-			superTime = 0;
-		}
+//		if (!(KeyManager.moveForward || KeyManager.moveBackward || KeyManager.moveLeft || KeyManager.moveRight)) {
+//			superTime = 0;
+//		}
 		
 		if (KeyManager.moveForward) {
-			position.x += (moveSpeed * deltaTime) * (float)(Math.sin(Math.toRadians(yaw))) + ((Math.sin(6 * superTime)) / 200f);
-			position.z -= (moveSpeed * deltaTime) * (float)(Math.cos(Math.toRadians(yaw))) - ((Math.sin(6 * superTime)) / 200f);
-			position.y += ((Math.sin(12 * superTime)) / 100f);
+			position.x += (moveSpeed * deltaTime) * (float)(Math.sin(Math.toRadians(yaw))) /*+ ((Math.sin(6 * superTime)) / 200f)*/;
+			position.z -= (moveSpeed * deltaTime) * (float)(Math.cos(Math.toRadians(yaw))) /*- ((Math.sin(6 * superTime)) / 200f)*/;
+			//position.y += ((Math.sin(12 * superTime)) / 100f);
 		}
 		if (KeyManager.moveBackward) {
-			position.x -= (moveSpeed * deltaTime) * (float)(Math.sin(Math.toRadians(yaw))) - ((Math.sin(6 * superTime)) / 200f);
-			position.z += (moveSpeed * deltaTime) * (float)(Math.cos(Math.toRadians(yaw))) + ((Math.sin(6 * superTime)) / 200f);
-			position.y += ((Math.cos(12 * superTime)) / 100f);
+			position.x -= (moveSpeed * deltaTime) * (float)(Math.sin(Math.toRadians(yaw))) /*+ ((Math.sin(6 * superTime)) / 200f)*/;
+			position.z += (moveSpeed * deltaTime) * (float)(Math.cos(Math.toRadians(yaw))) /*- ((Math.sin(6 * superTime)) / 200f)*/;
+			//position.y -= ((Math.sin(12 * superTime)) / 100f);
 		}
 		if (KeyManager.moveLeft) {
 			position.x -= (moveSpeed * deltaTime) * (float)Math.sin(Math.toRadians(yaw + 90));
 			position.z += (moveSpeed * deltaTime) * (float)Math.cos(Math.toRadians(yaw + 90));
-			position.y += ((Math.sin(12 * superTime)) / 100f);
+			//position.y += ((Math.sin(12 * superTime)) / 100f);
 		}
 		if (KeyManager.moveRight) {
 			position.x -= (moveSpeed * deltaTime) * (float)Math.sin(Math.toRadians(yaw - 90));
 			position.z += (moveSpeed * deltaTime) * (float)Math.cos(Math.toRadians(yaw - 90));
-			position.y += ((Math.sin(12 * superTime)) / 100f);
+			//position.y -= ((Math.sin(12 * superTime)) / 100f);
 		}
 		if (KeyManager.moveUp) {
 			position.y += (moveSpeed * deltaTime);
