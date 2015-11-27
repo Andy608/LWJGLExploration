@@ -17,8 +17,6 @@ public class EntityBase {
 	private Vector3f prevRotation;
 	private Vector3f prevScale;
 	
-//	private Vector3f lerpRotationNormal;
-	
 	public EntityBase(ModelBase modelType, Vector3f pos, Vector3f rot, Vector3f scal) {
 		model = modelType;
 		
@@ -37,21 +35,45 @@ public class EntityBase {
 	}
 	
 	public void rotateEntity(float dx, float dy, float dz) {
-		rotation.x = (rotation.x + dx) % 360;
-		rotation.y = (rotation.y + dy) % 360;
-		rotation.z = (rotation.z + dz) % 360;
+		rotation.x = (rotation.x + dx);
+		rotation.y = (rotation.y + dy);
+		rotation.z = (rotation.z + dz);
+		
+		if (rotation.y > 360) {
+			rotation.y -= 360;
+			prevRotation.y -= 360;
+		}
+		else if (rotation.y < -360) {
+			rotation.y += 360;
+			prevRotation.y += 360;
+		}
+		
+		if (rotation.x > 360) {
+			rotation.x -= 360;
+			prevRotation.x -= 360;
+		}
+		else if (rotation.x < -360) {
+			rotation.x += 360;
+			prevRotation.x += 360;
+		}
+		
+		if (rotation.z > 360) {
+			rotation.z -= 360;
+			prevRotation.z -= 360;
+		}
+		else if (rotation.z < -360) {
+			rotation.z += 360;
+			prevRotation.z += 360;
+		}
 	}
 	
 	public void updateLerp(float lerp) {
 		if (!prevPosition.equals(position)) {
+			prevPosition.set(position);
 			lerpVec(prevPosition, position, lerp);
 		}
 		
 		if (!prevRotation.equals(rotation)) {
-//			Vector3f.sub(prevRotation, rotation, lerpRotationNormal);
-//			lerpRotationNormal.normalise();
-			
-			
 			lerpVec(prevRotation, rotation, lerp);
 		}
 		
@@ -77,6 +99,10 @@ public class EntityBase {
 	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
+	
+	public void setPosition(float x, float y, float z) {
+		this.position.set(x, y, z);
+	}
 
 	public Vector3f getRotation() {
 		return rotation;
@@ -85,6 +111,10 @@ public class EntityBase {
 	public void setRotation(Vector3f rotation) {
 		this.rotation = rotation;
 	}
+	
+	public void setRotation(float x, float y, float z) {
+		this.rotation.set(x, y, z);
+	}
 
 	public Vector3f getScale() {
 		return scale;
@@ -92,6 +122,14 @@ public class EntityBase {
 
 	public void setScale(Vector3f scale) {
 		this.scale = scale;
+	}
+	
+	public void setScale(float uniformScale) {
+		this.scale.set(uniformScale, uniformScale, uniformScale);
+	}
+	
+	public void scaleEntity(float uniformScale) {
+		this.scale.set(scale.x + uniformScale, scale.y + uniformScale, scale.z + uniformScale);
 	}
 	
 	public Vector3f getLerpPosition() {

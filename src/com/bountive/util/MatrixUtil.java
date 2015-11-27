@@ -17,7 +17,7 @@ public final class MatrixUtil {
 	//THESE WILL NOT BE HERE EVENTUALLY
 	private float FOV;
 	private float NEAR_PLANE = 0.1f;
-	private float FAR_PLANE  = 100f;
+	private float FAR_PLANE  = 200f;
 	
 	private BasicShader shader;
 	////////////////

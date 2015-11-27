@@ -1,5 +1,6 @@
 package com.bountive.start;
 
+import java.util.Random;
 import math.Vector3f;
 
 import org.lwjgl.Sys;
@@ -37,7 +38,8 @@ public class Exploration implements Disposable {
 	//TODO: TEMPORARY
 	private BasicShader shader;
 	private ModelSquare s;
-	private EntityBase[] entitySquare;
+	private EntityBase[][][] entitySquare;
+	
 	private EntityRenderer renderer;
 	private EntityCamera camera;
 	///////////////////
@@ -69,10 +71,24 @@ public class Exploration implements Disposable {
 		shader = new BasicShader();
 		renderer = new EntityRenderer(shader);
 		s = new ModelSquare();
-		entitySquare = new EntityBase[3];
-		entitySquare[0] = new EntityBase(s.getModel(), new Vector3f(-1, 0, -2), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-		entitySquare[1] = new EntityBase(s.getModel(), new Vector3f(1, 0, -2), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
-		entitySquare[2] = new EntityBase(s.getModel(), new Vector3f(0, -2, 0), new Vector3f(0, 0, 0), new Vector3f(20, 0.2f, 20));
+		
+		int width, height, length;
+		width = length = 16;
+		height = 64;
+		
+		entitySquare = new EntityBase[width][height][length];
+//		entitySquare[0] = new EntityBase(s.getModel(), new Vector3f(-1, 0, -2), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+//		entitySquare[1] = new EntityBase(s.getModel(), new Vector3f(1, 0, -2), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+//		entitySquare[2] = new EntityBase(s.getModel(), new Vector3f(0, -2, 0), new Vector3f(0, 0, 0), new Vector3f(20, 0.2f, 20));
+		
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				for (int z = 0; z < length; z++) {
+					entitySquare[x][y][z] = new EntityBase(s.getModel(), new Vector3f(x, y, z), new Vector3f(0, 0, 0), new Vector3f(1, 1, 1));
+				}
+			}
+		}
+		
 		GLFW.glfwSetInputMode(window.getID(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_HIDDEN);
 		///////////////
 		
@@ -100,36 +116,54 @@ public class Exploration implements Disposable {
 		}
 	}
 	
-	private float superTime;
+//	private float superTime;
+	
+//	private static final Random rand = new Random();
 	
 	private void update(double deltaTime) {
 		tickCount++;
 		
-		if (tickCount % 60 == 0) {
+		if (tickCount % TICKS_PER_SECOND == 0) {
 			System.out.println("Ticks: " + tickCount + ", Frames: " + frameCount);
 			tickCount = 0;
 			frameCount = 0;
 		}
 		
-		superTime += deltaTime;
+//		superTime += deltaTime;
 		
 		camera.update((float)deltaTime);
 //		entitySquare[0].moveEntity((float)(Math.sin(superTime) / 20d), -(float)(Math.sin(superTime) / 120d), (float)(Math.cos(superTime) / 50d));
 //		entitySquare[0].moveEntity((float)(Math.cos(superTime) / 10d), 0f, (float)(Math.sin(superTime) / 10d));
 		
+//		entitySquare[0].moveEntity((float)(Math.cos(superTime) / 20d), 0f, 0f);
+		
 //		entitySquare[0].moveEntity((float)(Math.cos(superTime) / 20d), 0f, (float)(Math.sin(superTime) / 20d));
 //		entitySquare[0].moveEntity(0f, (float)((4 * Math.sin(4 * superTime)) / 40d), 0f);
-//		
-//		entitySquare[1].moveEntity((float)(-Math.sin(superTime) / 50d), (float)(2 * Math.sin(2 * superTime) / 120d), (float)(-Math.cos(superTime) / 50d));
-		entitySquare[1].rotateEntity(0, -(float)(120 * deltaTime), 0);
 		
-//		entitySquare[2].rotateEntity(0,  (float)(360 * deltaTime), 0);
+//		entitySquare[1].moveEntity((float)(-Math.sin(superTime) / 50d), (float)(2 * Math.sin(2 * superTime) / 120d), (float)(-Math.cos(superTime) / 50d));
+//		entitySquare[1].rotateEntity(0, 0, (float)(360 * deltaTime));
+		
+//		entitySquare[2].rotateEntity(0,  (float)(20 * deltaTime), 0);
+		
+		
+//		entitySquare[0][0][0].scaleEntity((float)((1 * deltaTime)));
+		
+		for (int x = 0; x < entitySquare.length; x++) {
+			for (int y = 0; y < entitySquare[x].length; y++) {
+				for (int z = 0; z < entitySquare[x][y].length; z++) {
+//					entitySquare[rand.nextInt(entitySquare.length)][rand.nextInt(entitySquare[x].length)][rand.nextInt(entitySquare[x][y].length)].moveEntity((float)(Math.cos(superTime)), 0, (float)(Math.sin(superTime)));
+//					entitySquare[x][y][z].moveEntity((float)(Math.cos(superTime) / 20f), 0, (float)(Math.sin(superTime) / 20f));
+				}
+			}
+		}
 		
 		GLFW.glfwSetCursorPos(window.getID(), (window.getWindowOptions().getWidth() / 2), (window.getWindowOptions().getHeight() / 2));
 	}
 	
 	private void render(float lerp) {
-		frameCount++;
+		if (!KeyManager.pause)
+			frameCount++;
+		
 		GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -140,9 +174,18 @@ public class Exploration implements Disposable {
 		//This method would ideally get called from a world that is holding a list of all the entities.
 		shader.loadViewMatrix(camera);
 		
-		renderer.render(entitySquare[0], lerp, shader);
-		renderer.render(entitySquare[1], lerp, shader);
-		renderer.render(entitySquare[2], lerp, shader);
+//		renderer.render(entitySquare[0], lerp, shader);
+//		renderer.render(entitySquare[1], lerp, shader);
+//		renderer.render(entitySquare[2], lerp, shader);
+		
+		for (int x = 0; x < entitySquare.length; x++) {
+			for (int y = 0; y < entitySquare[x].length; y++) {
+				for (int z = 0; z < entitySquare[x][y].length; z++) {
+					renderer.render(entitySquare[x][y][z], lerp, shader);
+				}
+			}
+		}
+		
 //		t.render();
 		shader.unbind();
 		/////////////////
