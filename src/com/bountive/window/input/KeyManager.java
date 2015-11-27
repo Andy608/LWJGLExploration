@@ -51,9 +51,11 @@ public final class KeyManager {
 			
 			if (debug) {
 				GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+				GLFW.glfwSwapInterval(1);
 			}
 			else {
 				GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+				GLFW.glfwSwapInterval(0);
 			}
 			
 			if (startQuit && !(keys.contains(GLFW.GLFW_KEY_ESCAPE) && keys.contains(GLFW.GLFW_KEY_LEFT_SHIFT))) {

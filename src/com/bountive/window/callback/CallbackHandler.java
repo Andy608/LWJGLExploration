@@ -37,6 +37,7 @@ public class CallbackHandler implements Disposable {
 		errorCallback.release();
 		windowSizeCallback.release();
 		windowCloseCallback.release();
+		windowFocusCallback.release();
 		keyCallback.release();
 		mouseButtonCallback.release();
 		cursorPositionCallback.release();

@@ -31,10 +31,10 @@ public final class ModelLoader implements Disposable {
 		}
 	}
 	
-	public ModelBase createModel(float[] positions, int dataSize, float[] colors, int dataSize1) {
+	public ModelBase createModel(float[] positions, float[] colors) {
 		int vaoID = createVao();
-		bindDataToVao(0, positions, dataSize);
-		bindDataToVao(1, colors, dataSize1);
+		bindDataToVao(0, positions, 3);
+		bindDataToVao(1, colors, 4);
 		unbindVao();
 		return new ModelBase(vaoID, positions.length / 3);
 	}

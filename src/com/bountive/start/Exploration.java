@@ -53,7 +53,10 @@ public class Exploration implements Disposable {
 			
 		} finally {
 			dispose();
+			System.exit(0);
 		}
+		
+		System.gc();
 	}
 	
 	private void loop() {
@@ -114,11 +117,13 @@ public class Exploration implements Disposable {
 //		entitySquare[0].moveEntity((float)(Math.sin(superTime) / 20d), -(float)(Math.sin(superTime) / 120d), (float)(Math.cos(superTime) / 50d));
 //		entitySquare[0].moveEntity((float)(Math.cos(superTime) / 10d), 0f, (float)(Math.sin(superTime) / 10d));
 		
-		entitySquare[0].moveEntity((float)(Math.cos(superTime) / 20d), 0f, (float)(Math.sin(superTime) / 20d));
-		entitySquare[0].moveEntity(0f, (float)((4 * Math.sin(4 * superTime)) / 40d), 0f);
-		
-		entitySquare[1].moveEntity((float)(-Math.sin(superTime) / 50d), (float)(2 * Math.sin(2 * superTime) / 120d), (float)(-Math.cos(superTime) / 50d));
+//		entitySquare[0].moveEntity((float)(Math.cos(superTime) / 20d), 0f, (float)(Math.sin(superTime) / 20d));
+//		entitySquare[0].moveEntity(0f, (float)((4 * Math.sin(4 * superTime)) / 40d), 0f);
+//		
+//		entitySquare[1].moveEntity((float)(-Math.sin(superTime) / 50d), (float)(2 * Math.sin(2 * superTime) / 120d), (float)(-Math.cos(superTime) / 50d));
 		entitySquare[1].rotateEntity(0, -(float)(120 * deltaTime), 0);
+		
+//		entitySquare[2].rotateEntity(0,  (float)(360 * deltaTime), 0);
 		
 		GLFW.glfwSetCursorPos(window.getID(), (window.getWindowOptions().getWidth() / 2), (window.getWindowOptions().getHeight() / 2));
 	}
@@ -134,9 +139,10 @@ public class Exploration implements Disposable {
 		
 		//This method would ideally get called from a world that is holding a list of all the entities.
 		shader.loadViewMatrix(camera);
-		renderer.render(entitySquare[0], shader);
-		renderer.render(entitySquare[1], shader);
-		renderer.render(entitySquare[2], shader);
+		
+		renderer.render(entitySquare[0], lerp, shader);
+		renderer.render(entitySquare[1], lerp, shader);
+		renderer.render(entitySquare[2], lerp, shader);
 //		t.render();
 		shader.unbind();
 		/////////////////
